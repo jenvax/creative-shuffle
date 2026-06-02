@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Creative Shuffle Generator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      background: #ffffff;
+      box-sizing: border-box;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+  #shuffle-app {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #fafafa;
+    padding: 28px;
+    border-radius: 24px;
+  }
+
+  .shuffle-button {
+    background: #2f8a83;
+    color: white;
+    border: none;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 0 0 24px 0;
+    display: inline-block;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    margin: 0;
+    font-size: 34px;
+    color: #183047;
+  }
+
+  .page-header p {
+    margin: 6px 0 0;
+    color: #5b5b5b;
+    font-size: 16px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .deck-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 460px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eadfce;
+  }
+
+  .card-role-header {
+    padding: 14px 18px;
+    color: white;
+  }
+
+  .card-role-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+    opacity: .95;
+  }
+
+  .card-role-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-top: 4px;
+    line-height: 1.1;
+  }
+
+  .composition-header {
+    background: #2f8a83;
+  }
+
+  .grid-header {
+    background: #4d96a0;
+  }
+
+  .hero-header {
+    background: #e76f51;
+  }
+
+  .hero-card .card-image-wrap {
+    height: 220px;
+  }
+
+  .secondary-header {
+    background: #f4a261;
+  }
+
+  .tertiary-header {
+    background: #e9b949;
+  }
+
+  .palette-header {
+    background: #6a994e;
+  }
+
+  .card-image-wrap {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 22px;
+  }
+
+  .card-image-wrap img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .card-description {
+    background: #f5ead8;
+    color: #555;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.35;
+    padding: 14px 18px;
+  }
+
+  .card-body {
+    padding: 16px 20px 20px;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .card-body p {
+    margin: 8px 0;
+  }
+
+  .card-body strong {
+    color: #202020;
+  }
+
+  .card-divider {
+    border-top: 2px solid #4d96a0;
+    margin: 12px 0;
+  }
+
+  .mini-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 8px 0 12px;
+  }
+
+  .pill {
+    background: #f1dfc6;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #333;
+  }
+
+  .palette-role {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
+  }
+
+  .color-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    border: 1px solid rgba(0, 0, 0, .18);
+    flex-shrink: 0;
+  }
+
+  .recipe-list {
+    margin: 8px 0 0 18px;
+    padding: 0;
+  }
+
+  .recipe-list li {
+    margin: 6px 0;
+  }
+
+  .recipe-summary-card {
+    margin-bottom: 30px;
+    background: #ffffff;
+    border: 2px solid #2f8a83;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+    margin-top: 28px;
+    min-height: auto;
+  }
+
+  .recipe-summary-header {
+    background: #2f8a83;
+    color: white;
+    padding: 18px 24px;
+  }
+
+  .recipe-kicker {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .recipe-summary-header h2 {
+    margin: 4px 0 0;
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .recipe-summary-body {
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 18px 24px;
+  }
+
+  .recipe-summary-card .card-body {
+    padding: 24px 32px;
+  }
+
+  .recipe-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    background: #f1dfc6;
+    color: #183047;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .recipe-step p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.35;
+    color: #333;
+  }
+
+  @media (max-width: 900px) {
+    .recipe-summary-body {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 800px) {
+    #shuffle-app {
+      padding: 18px;
+    }
+
+    .deck-card {
+      min-height: auto;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+    }
+  }
+
+  </style>
+</head>
+<body>
+  <button id="generate-shuffle-btn" class="shuffle-button">
+    Generate New Shuffle
+  </button>
+
+  <div id="shuffle-app">Loading shuffle...</div>
+
+  <script>
+function cleanList(value) {
+  return String(value || "").split(",").map(function(item) { return item.trim(); }).filter(Boolean).join(", ");
+}
+
+function getImage(record) {
+  var f = record.fields || {};
+  return f["Image"] && f["Image"][0] ? f["Image"][0].url : "";
+}
+
+function fillInstruction(template, data) {
+  return String(template || "")
+    .split("{scale}").join(data.scale)
+    .split("{grid}").join(data.grid)
+    .split("{secondGrid}").join(data.secondGrid)
+    .split("{style}").join(data.style)
+    .split("{method}").join(data.method)
+    .split("{palette}").join("<strong>" + data.palette + "</strong>")
+    .split("{hero}").join("<strong>" + data.hero + "</strong>")
+    .split("{secondary}").join("<strong>" + data.secondary + "</strong>")
+    .split("{tertiary}").join("<strong>" + data.tertiary + "</strong>");
+}
+
+function renderDeckCard(roleLabel, title, image, description, bodyHtml, headerClass, extraClass) {
+  return '<div class="deck-card' + (extraClass || "") + '">' +
+    '<div class="card-role-header ' + headerClass + '">' +
+    '<div class="card-role-label">' + roleLabel + '</div>' +
+    '<div class="card-role-title">' + title + '</div>' +
+    '</div>' +
+    (image ? '<div class="card-image-wrap"><img src="' + image + '" alt="' + title + '"></div>' : '') +
+    '<div class="card-description">' + description + '</div>' +
+    '<div class="card-body">' + bodyHtml + '</div>' +
+    '</div>';
+}
+
+function renderGridCard(grid) {
+  var f = grid.fields || {};
+  var image = getImage(grid);
+  var body = '<p><strong>Draw Tip:</strong> ' + (f["Draw Tip"] || "") + '</p>' +
+    '<p><strong>Placement Tip:</strong> ' + (f["Placement Tip"] || "") + '</p>';
+  return renderDeckCard("Grid", f["Grid Name"] || "Grid", image, f["Structure Description"] || "Use this layout to guide motif placement.", body, "grid-header");
+}
+
+function renderMotifCard(motif, roleLabel, headerClass) {
+  var f = motif.fields || {};
+  var image = getImage(motif);
+  var body = '<p><strong>Function:</strong> ' + (f["Motif Function"] || "Not assigned") + '</p>' +
+    '<p><strong>Type:</strong> ' + cleanList(f["Motif Types"]) + '</p>' +
+    '<p><strong>Best As:</strong> ' + cleanList(f["Best For"]) + '</p>' +
+    '<p><strong>Draw Tip:</strong> ' + (f["Draw Tip"] || "Keep the shape simple and repeat consistently.") + '</p>';
+  return renderDeckCard(roleLabel, f["Motif Name"] || roleLabel, image, f["Motif Description"] || "Motif description needed.", body, headerClass);
+}
+
+function paletteRole(label, color) {
+  return '<div class="palette-role"><span class="color-box" style="background:' + (color || "#ddd") + '"></span><span>' + label + '</span></div>';
+}
+
+function renderPaletteCard(palette) {
+  var f = palette.fields || {};
+  var body = paletteRole("Background", f["Background Color"]) +
+    paletteRole("Hero Motif", f["Hero Color"]) +
+    paletteRole("Secondary Motif", f["Secondary Color"]) +
+    paletteRole("Tertiary Motif", f["Tertiary Color"]) +
+    paletteRole("Supporting Details", f["Supporting Color"]) +
+    paletteRole("Pop Color", f["Pop Color"]) +
+    '<div class="card-divider"></div>' +
+    '<p><strong>Mood:</strong> ' + (f["Palette Mood"] || "") + '</p>' +
+    '<p><strong>Tip:</strong> ' + (f["Palette Tip"] || "Use the pop color sparingly for small accents.") + '</p>';
+  return renderDeckCard("Color Palette", f["Palette Name"] || "Palette", "", f["Notes / Description"] || "Use these colors to guide background, motifs, and accents.", body, "palette-header");
+}
+
+function recipeStep(number, title, text) {
+  return '<div class="recipe-step"><span class="step-number">' + number + '</span><p><strong>' + title + '.</strong><br>' + text + '</p></div>';
+}
+
+function renderRecipeSummary(workflow, workflowSteps, grid, secondGrid, gridScale, gridStyle, gridMethod, hero, secondary, tertiary, palette) {
+  var g = grid.fields || {};
+  var h = hero.fields || {};
+  var s = secondary.fields || {};
+  var t = tertiary.fields || {};
+  var p = palette.fields || {};
+
+  var data = {
+    scale: ((gridScale.fields || {})["Grid Scale"] || "medium").toLowerCase(),
+    grid: g["Grid Name"] || "grid",
+    secondGrid: secondGrid ? secondGrid.fields["Grid Name"] : "second grid",
+    style: ((gridStyle.fields || {})["Grid Style"] || "neatly").toLowerCase(),
+    method: ((gridMethod.fields || {})["Grid Method"] || "in light pencil").toLowerCase(),
+    palette: p["Palette Name"] || "the selected palette",
+    hero: h["Motif Name"] || "hero motif",
+    secondary: s["Motif Name"] || "secondary motif",
+    tertiary: t["Motif Name"] || "tertiary motif"
+  };
+
+  workflowSteps.sort(function(a, b) {
+    return ((a.fields || {})["Step Number"] || 0) - ((b.fields || {})["Step Number"] || 0);
+  });
+
+  var stepsHtml = workflowSteps.map(function(step) {
+    var f = step.fields || {};
+    var instruction = fillInstruction(f["Instruction Template"] || "", data);
+    return recipeStep(f["Step Number"] || "", f["Step Type"] || "Step", instruction);
+  }).join("");
+
+  return '<div class="recipe-summary-card"><div class="recipe-summary-header"><div class="recipe-kicker">Creative Shuffle</div><h2>Try This</h2></div><div class="recipe-summary-body">' + stepsHtml + '</div></div>';
+}
+
+function renderShuffle(data) {
+  var workflow = data.workflow;
+  var workflowSteps = data.workflowSteps || [];
+  var grid = data.grid;
+  var secondGrid = data.secondGrid || null;
+  var gridScale = data.gridScale;
+  var gridStyle = data.gridStyle;
+  var gridMethod = data.gridMethod;
+  var hero = data.hero;
+  var secondary = data.secondary;
+  var tertiary = data.tertiary;
+  var palette = data.palette;
+
+  var workflowName = (workflow.fields || {})["Workflow Name"] || "";
+  var gridCardsHtml = "";
+
+  if (workflowName !== "Medallion Build") {
+    gridCardsHtml += renderGridCard(grid);
+  }
+
+  if (secondGrid) {
+    gridCardsHtml += renderGridCard(secondGrid);
+  }
+
+  return renderRecipeSummary(workflow, workflowSteps, grid, secondGrid, gridScale, gridStyle, gridMethod, hero, secondary, tertiary, palette) +
+    '<div class="card-grid">' +
+    gridCardsHtml +
+    renderPaletteCard(palette) +
+    renderMotifCard(hero, "Hero Motif", "hero-header") +
+    renderMotifCard(secondary, "Secondary Motif", "secondary-header") +
+    renderMotifCard(tertiary, "Tertiary Motif", "tertiary-header") +
+    '</div>';
+}
+
+async function generateShuffle() {
+  var button = document.getElementById("generate-shuffle-btn");
+  var app = document.getElementById("shuffle-app");
+
+  button.disabled = true;
+  button.innerText = "Generating...";
+  app.innerHTML = "Creating your shuffle...";
+
+  try {
+    var res = await fetch("/api/shuffle");
+    var data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Error generating shuffle.");
+    }
+
+    app.innerHTML = renderShuffle(data);
+  } catch (error) {
+    app.innerHTML = "Error generating shuffle: " + error.message;
+    console.error(error);
+  }
+
+  button.disabled = false;
+  button.innerText = "Generate New Shuffle";
+}
+
+document.getElementById("generate-shuffle-btn").addEventListener("click", generateShuffle);
+generateShuffle();
+  </script>
+</body>
+</html>
